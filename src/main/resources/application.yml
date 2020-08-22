@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: yesdrive
+    password: yesdrive
+    url: jdbc:mysql://192.168.112.133:3306/tohosky?serverTimezone=GMT%2b8
+    type: com.zaxxer.hikari.HikariDataSource
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
