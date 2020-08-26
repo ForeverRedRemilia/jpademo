@@ -28,7 +28,7 @@ public class CharacterServiceImpl implements CharacterService {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> countQry = criteriaBuilder.createQuery(Long.class);
         Root<CharaResidGameBean> root = countQry.from(CharaResidGameBean.class);
-        //此种方式无需考虑JPA的N+1问题
+        //count必须用join声明连接方式
         root.join("residenceJoinBean", JoinType.INNER);
         root.join("gameJoinBean", JoinType.INNER);
         Predicate predicate = criteriaBuilder.conjunction();
@@ -50,6 +50,9 @@ public class CharacterServiceImpl implements CharacterService {
         characterPage.setCount(count);
         CriteriaQuery<CharacterVo> criteriaQuery = criteriaBuilder.createQuery(CharacterVo.class);
         root = criteriaQuery.from(CharaResidGameBean.class);
+        //由于root重新被声明给criteriaQuery作查询对象，所以需要重新join
+        root.join("residenceJoinBean", JoinType.INNER);
+        root.join("gameJoinBean", JoinType.INNER);
         criteriaQuery.select(criteriaBuilder.construct(CharacterVo.class,
                 root.get("characterCode").alias("characterCode"),
                 root.get("characterName").alias("characterName"),
